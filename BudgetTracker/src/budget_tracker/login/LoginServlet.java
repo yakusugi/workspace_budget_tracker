@@ -19,46 +19,51 @@ import javax.sql.DataSource;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+	LoginServletLogic loginServletLogic;
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	ResultSet rset = null;
+
 	// データソースの作成
-		DataSource ds;
+	DataSource ds;
 
-		// 初期化処理
-		public void init() throws ServletException {
-			try {
-				// 初期コンテキストを取得
-				InitialContext ic = new InitialContext();
-				// ルックアップしてデータソースを取得
-				ds = (DataSource) ic.lookup("java:comp/env/jdbc/searchman");
-			} catch (Exception e) {
+	// 初期化処理
+	public void init() throws ServletException {
+		try {
+			// 初期コンテキストを取得
+			InitialContext ic = new InitialContext();
+			// ルックアップしてデータソースを取得
+			ds = (DataSource) ic.lookup("java:comp/env/jdbc/searchman");
+		} catch (Exception e) {
 
-			}
 		}
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public LoginServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
 
 		// setting text code
 		request.setCharacterEncoding("Windows-31J");
@@ -71,33 +76,23 @@ public class LoginServlet extends HttpServlet {
 
 		System.out.println(inputId);
 		System.out.println(inputPassword);
-		
+
 		try {
 			
-			// データソースからConnectionを取得
-			conn = ds.getConnection();
+			loginServletLogic = new LoginServletLogic();
 			
-			StringBuilder sql = new StringBuilder();
 			
-			sql.append("select * from login_table where id = ? && password = ? ");
+			rset = (ResultSet) loginServletLogic.login(inputId, inputPassword);
 			
-			pstmt = conn.prepareStatement(new String(sql));
-			
-			pstmt.setString(1, inputId);
-			
-			pstmt.setString(2, inputPassword);
-			
-			rset = pstmt.executeQuery();
-
 			// transfer the data to the transition page(put it by Attribute)
 			request.setAttribute("SqlResult", rset);
 
 			// move on to loginResult.jsp or loginResultFailed.jsp
 			if (rset.next()) {
-	            request.getRequestDispatcher("mainSearch.jsp").forward(request, response);
-	        } else {
-	            request.getRequestDispatcher("loginfailed.jsp").forward(request, response);
-	        }
+				request.getRequestDispatcher("mainSearch.jsp").forward(request, response);
+			} else {
+				request.getRequestDispatcher("loginFailed.jsp").forward(request, response);
+			}
 
 			// terminate the used objects
 			rset.close();
@@ -115,6 +110,7 @@ public class LoginServlet extends HttpServlet {
 			} catch (Exception e) {
 			}
 		}
+
 	}
 
 }
