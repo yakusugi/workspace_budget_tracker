@@ -42,13 +42,7 @@ public class LoginServletLogic {
 		} catch (Exception e) {
 			e.printStackTrace();
 
-		} finally {
-			try {
-				// just in case, terminate the DB connection with finally statement
-				conn.close();
-			} catch (Exception e) {
-			}
-		}
+		} 
 
 		return rset;
 

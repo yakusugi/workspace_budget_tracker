@@ -34,8 +34,15 @@ public class LoginServlet extends HttpServlet {
 			InitialContext ic = new InitialContext();
 			// ルックアップしてデータソースを取得
 			ds = (DataSource) ic.lookup("java:comp/env/jdbc/searchman");
+					
 		} catch (Exception e) {
 
+		} finally {
+			try {
+				// just in case, terminate the DB connection with finally statement
+				conn.close();
+			} catch (Exception e) {
+			}
 		}
 	}
 
