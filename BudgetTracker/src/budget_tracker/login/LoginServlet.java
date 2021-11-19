@@ -88,7 +88,6 @@ public class LoginServlet extends HttpServlet {
 			
 			loginServletLogic = new LoginServletLogic();
 			
-			
 			rset = (ResultSet) loginServletLogic.login(inputId, inputPassword);
 			
 			// transfer the data to the transition page(put it by Attribute)

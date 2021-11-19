@@ -34,11 +34,9 @@ public class LoginServletLogic {
 			pstmt.setString(1, inputId);
 
 			pstmt.setString(2, inputPassword);
-
+			
 			rset = pstmt.executeQuery();
-
-			return rset;
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 
