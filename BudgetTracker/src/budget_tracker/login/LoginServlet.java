@@ -23,6 +23,7 @@ public class LoginServlet extends HttpServlet {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rset = null;
+	boolean sqlResult = false;
 
 	// データソースの作成
 	DataSource ds;
@@ -86,15 +87,15 @@ public class LoginServlet extends HttpServlet {
 
 		try {
 			
-			loginServletLogic = new LoginServletLogic();
-			
-			rset = (ResultSet) loginServletLogic.login(inputId, inputPassword);
-			
-			// transfer the data to the transition page(put it by Attribute)
-			request.setAttribute("SqlResult", rset);
+//			sqlResult = loginServletLogic = new LoginServletLogic();
+//			
+//			loginServletLogic.login(inputId, inputPassword);
+//			
+////			 transfer the data to the transition page(put it by Attribute
+//			request.setAttribute("SqlResult", rset);
 
 			// move on to loginResult.jsp or loginResultFailed.jsp
-			if (rset.next()) {
+			if (loginServletLogic.login(inputId, inputPassword)) {
 				request.getRequestDispatcher("mainSearch.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("loginFailed.jsp").forward(request, response);

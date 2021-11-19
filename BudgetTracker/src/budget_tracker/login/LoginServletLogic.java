@@ -3,6 +3,7 @@ package budget_tracker.login;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -13,8 +14,9 @@ public class LoginServletLogic {
 	DataSource ds;
 	Connection conn = null;
 	PreparedStatement pstmt = null;
+	boolean sqlResult = false;
 
-	public ResultSet login(String inputId, String inputPassword) {
+	public boolean login(String inputId, String inputPassword) throws SQLException {
 		try {
 
 			// 初期コンテキストを取得
@@ -37,12 +39,19 @@ public class LoginServletLogic {
 			
 			rset = pstmt.executeQuery();
 			
+			if (rset.next()) {
+				sqlResult = true;
+			} else {
+				sqlResult = false;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		} 
-
-		return rset;
+		
+		return sqlResult;
+		
 
 	}
 
