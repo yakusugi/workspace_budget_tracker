@@ -84,15 +84,9 @@ public class LoginServlet extends HttpServlet {
 
 		System.out.println(inputId);
 		System.out.println(inputPassword);
+		loginServletLogic = new LoginServletLogic();
 
 		try {
-			
-//			sqlResult = loginServletLogic = new LoginServletLogic();
-//			
-//			loginServletLogic.login(inputId, inputPassword);
-//			
-////			 transfer the data to the transition page(put it by Attribute
-//			request.setAttribute("SqlResult", rset);
 
 			// move on to loginResult.jsp or loginResultFailed.jsp
 			if (loginServletLogic.login(inputId, inputPassword)) {
@@ -100,11 +94,6 @@ public class LoginServlet extends HttpServlet {
 			} else {
 				request.getRequestDispatcher("loginFailed.jsp").forward(request, response);
 			}
-
-			// terminate the used objects
-			rset.close();
-			pstmt.close();
-			conn.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
