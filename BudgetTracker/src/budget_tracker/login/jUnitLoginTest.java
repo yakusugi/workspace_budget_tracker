@@ -39,8 +39,6 @@ class jUnitLoginTest {
 			ds.setDatabaseName("new_budget_tracker_db");
 			ds.setServerName("localhost");
 			ds.setPortNumber(3306);
-			
-			ds = (MysqlDataSource) ic.lookup("java:comp/env/jdbc/searchman");
 
 			ic.bind("java:comp/env/jdbc/searchman", ds);
 
