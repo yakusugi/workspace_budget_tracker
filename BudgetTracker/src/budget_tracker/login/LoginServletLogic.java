@@ -21,6 +21,7 @@ public class LoginServletLogic {
 
 			// 初期コンテキストを取得
 			InitialContext ic = new InitialContext();
+			
 			// ルックアップしてデータソースを取得
 			ds = (DataSource) ic.lookup("java:comp/env/jdbc/searchman");
 
